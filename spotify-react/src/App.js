@@ -49,12 +49,55 @@ function App() {
         topTracks = topTracks.concat(data.items);
       } else { // If something goes wrong
         console.log("oopsie!!");
+        data = {};
       }
     }
     console.log(topTracks);
     printTopTracks(topTracks);
-    getTopLabels(topTracks);
+
+    let groupedAlbums = groupAlbums(topTracks);
+    let albumData = await getAlbumData(groupedAlbums);
+    console.log(albumData);
+
+    console.log(groupLabels(albumData));
     return topTracks;
+  }
+
+  // Takes an array of top tracks and returns the unique albums
+  const groupAlbums = (tracks) => {
+    let albums = {};
+    for (const track of tracks) {
+      albums[track.album.id] = track.album;
+    }
+    return Object.values(albums);
+  }
+
+  // Takes an array of albums and returns an array containing each album's full data
+  const getAlbumData = async (albums) => {
+    let albumData = [];
+    for (const album of albums) {
+      let response = await fetch(album.href, { headers: { Authorization: `Bearer ${token}` } } );
+      if (response.ok) {
+        let data = await response.json();
+        albumData.push(data);
+      } else {
+        console.log(response);
+      }
+    }
+    return albumData;
+  }
+
+  // Takes an array of albums and returns an object with labels as keys and albums as values
+  const groupLabels = (albums) => {
+    let result = {};
+    for (const album of albums) {
+      if (result[album.label]) {
+        result[album.label].push(album);
+      } else {
+        result[album.label] = [album];
+      }
+    }
+    return result;
   }
 
   // Prints out the artist(s) name(s) and title of each track
@@ -62,18 +105,20 @@ function App() {
     for (const track of topTracks) {
       console.log(track.artists.map((artist) => artist.name).join(", ") + " - " + track.name);
     }
-  };
+  }
 
   // Gets the label associated with each track
-  const getTopLabels = (items) => {
+  const getTopLabels = async (items) => {
+    let data = {};
     for (const item of items) { // Loop through every track in the array
       // Fetch the details of the album the track is on from the Spotify API
-      fetch(item.album.href, { headers: { Authorization: `Bearer ${token}` } } )
-        .then((res) => res.json())
-        .then((album) => {
-          console.log(album.artists.map((artist) => artist.name).join(", ") + " - " + album.label);
-        })
-        .catch((err) => { console.log(err) });
+      let response = await fetch(item.album.href, { headers: { Authorization: `Bearer ${token}` } } );
+      if (response.ok) {
+        data = await response.json();
+        console.log(data);
+      } else {
+        console.log(response);
+      }
     }
   }
 
