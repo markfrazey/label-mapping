@@ -12,6 +12,9 @@ function App() {
   // Initialize the token using useState
   const [token, setToken] = useState("");
 
+  // Initialize the top artists object
+  const [artists, setArtists] = useState([]);
+
   // idk what this does but i think it gets the token or smth
   useEffect(() => {
     const hash = window.location.hash;
@@ -58,7 +61,7 @@ function App() {
     let groupedAlbums = groupAlbums(topTracks);
     let albumData = await getAlbumData(groupedAlbums);
     console.log(albumData);
-
+    console.log(printCopyrights(albumData));
     console.log(groupLabels(albumData));
     return topTracks;
   }
@@ -100,6 +103,15 @@ function App() {
     return result;
   }
 
+  //
+  const printCopyrights = (albums) => {
+    for (const album of albums) {
+      for (const copyright of album.copyrights) {
+        console.log(copyright);
+      }
+    }
+  }
+
   // Prints out the artist(s) name(s) and title of each track
   const printTopTracks = (topTracks) => {
     for (const track of topTracks) {
@@ -122,19 +134,94 @@ function App() {
     }
   }
 
+  const getTopArtists = async () => {
+    let data = { next: "https://api.spotify.com/v1/me/top/artists" };
+    let topArtists = [];
+    while (data.next) {
+      console.log("Fetching next...");
+      let response = await fetch(data.next, { headers: { Authorization: `Bearer ${token}` } } );
+      console.log("Done fetching next page!");
+      if (response.ok) {
+        data = await response.json();
+        console.log(data);
+        topArtists = topArtists.concat(data.items);
+      } else {
+        console.log("oopsie!!");
+        console.log(response);
+        data = {};
+      }
+    }
+    console.log(topArtists);
+    getArtistAlbums(topArtists.slice(0, 10));
+  }
+
+  const getArtistAlbums = async (artists) => {
+    let result = [];
+    for (const artist of artists) {
+      let artistAlbums = [];
+      let data = { next: `${artist.href}/albums?include_groups=album` };
+      while (data.next) {
+        let response = await fetch(data.next, { headers: { Authorization: `Bearer ${token}` } } );
+        if (response.ok) {
+          data = await response.json();
+          artistAlbums = artistAlbums.concat(data.items);
+        } else {
+          console.log("oopsie!!");
+          console.log(response);
+          data = {};
+        }
+      }
+      console.log(artistAlbums);
+      let albums = await getAlbumData(artistAlbums);
+      artist.albums = albums;
+      result.push(artist);
+      console.log(albums);
+    }
+    setArtists(result);
+    return result;
+  }
+
+  function AlbumBox (props) {
+    return (
+      <div>
+        <img src={props.album.images[1].url} />
+        <h3>{props.album.name}</h3>
+        <h4>{props.album.label}</h4>
+      </div>
+    );
+  }
+
+  function ArtistBox (props) {
+    let artist = props.artist;
+    return (
+      <div>
+        <h2>{artist.name}</h2>
+        {artist.albums.map((album) => <AlbumBox album={album} /> )}
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-      {!token ?
-        <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}>Login
-            to Spotify</a>
-        : <button onClick={logout}>Logout</button>
-      }
-      {token ?
-        <button onClick={getTopTracks}>Go!</button>
-        : <h2>Please login</h2>
-      }
+        {!token ?
+          <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}>Login
+              to Spotify</a>
+          : <button onClick={logout}>Logout</button>
+        }
+        {token ?
+          <button onClick={getTopArtists}>Go!</button>
+          : <h2>Please login</h2>
+        }
       </header>
+      <body>
+        <div id="output">
+          {artists.length > 0 ?
+            artists.map((artist) => <ArtistBox artist={artist} /> )
+            : <h4>Press "Go" and then wait a little bit</h4>
+          }
+        </div>
+      </body>
     </div>
   );
 }
