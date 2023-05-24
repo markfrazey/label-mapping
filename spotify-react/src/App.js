@@ -1,5 +1,5 @@
 import './App.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function App() {
   // Initialize all of the variables that the Spotify API requires
@@ -59,7 +59,7 @@ function App() {
     printTopTracks(topTracks);
 
     let groupedAlbums = groupAlbums(topTracks);
-    let albumData = await getAlbumData(groupedAlbums);
+    let albumData = await getAllAlbumData(groupedAlbums);
     console.log(albumData);
     console.log(printCopyrights(albumData));
     console.log(groupLabels(albumData));
@@ -76,18 +76,24 @@ function App() {
   }
 
   // Takes an array of albums and returns an array containing each album's full data
-  const getAlbumData = async (albums) => {
+  const getAllAlbumData = async (albums) => {
     let albumData = [];
     for (const album of albums) {
-      let response = await fetch(album.href, { headers: { Authorization: `Bearer ${token}` } } );
+      albumData.push(await getAlbumData(album));
+    }
+    return albumData;
+  }
+
+  // Takes an individual album and returns an object containing the album's data
+  const getAlbumData = async (album) => {
+    let result;
+    let response = await fetch(album.href, { headers: { Authorization: `Bearer ${token}` } } );
       if (response.ok) {
-        let data = await response.json();
-        albumData.push(data);
+        result = await response.json();
       } else {
         console.log(response);
       }
-    }
-    return albumData;
+    return result;
   }
 
   // Takes an array of albums and returns an object with labels as keys and albums as values
@@ -172,13 +178,36 @@ function App() {
         }
       }
       console.log(artistAlbums);
-      let albums = await getAlbumData(artistAlbums);
+      let albums = await getAllAlbumData(artistAlbums);
       artist.albums = albums;
       result.push(artist);
       console.log(albums);
     }
     setArtists(result);
     return result;
+  }
+
+  const ref = useRef(null);
+
+  const getLabelsFromChartTracks = async () => {
+    let result = [];
+    let data = {};
+    let tracks = JSON.parse(ref.current.value);
+    console.log(tracks);
+    for (const track of tracks) {
+      let response = await fetch(`https://api.spotify.com/v1/tracks/${track.match(/(?<=track\/).*/)}`, { headers: { Authorization: `Bearer ${token}` } } );
+      if (response.ok) {
+        data = await response.json();
+        let albumData = await getAlbumData(data.album);
+        data.album = albumData;
+        console.log(data);
+        result.push(data);
+      } else {
+        console.log("oopsie!!");
+        console.log(response);
+      }
+    }
+    console.log(result);
   }
 
   function AlbumBox (props) {
@@ -210,7 +239,11 @@ function App() {
           : <button onClick={logout}>Logout</button>
         }
         {token ?
-          <button onClick={getTopArtists}>Go!</button>
+          <>
+            <button onClick={getTopArtists}>Go!</button>
+            <textarea id="top-songs" ref={ref}></textarea>
+            <button onClick={getLabelsFromChartTracks}>TEst</button>
+          </>
           : <h2>Please login</h2>
         }
       </header>
