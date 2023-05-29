@@ -212,7 +212,7 @@ function App() {
 
   function AlbumBox (props) {
     return (
-      <div>
+      <div class="albumBox">
         <img src={props.album.images[1].url} />
         <h3>{props.album.name}</h3>
         <h4>{props.album.label}</h4>
@@ -223,13 +223,14 @@ function App() {
   function ArtistBox (props) {
     let artist = props.artist;
     return (
-      <div>
+      <div class="artistBox">
         <h2>{artist.name}</h2>
         {artist.albums.map((album) => <AlbumBox album={album} /> )}
       </div>
     );
   }
 
+  // IRENE NOTE: This is where the initial landing page is 🌟
   return (
     <div className="App">
       <header className="App-header">
