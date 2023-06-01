@@ -235,37 +235,18 @@ function App() {
     window.localStorage.removeItem("token");
   }
 
-  function AlbumBox (props) {
-    return (
-      <div>
-        <img src={props.album.images[1].url} />
-        <h3>{props.album.name}</h3>
-        <h4>{props.album.label}</h4>
-      </div>
-    );
-  }
-
-  function ArtistBox (props) {
-    let artist = props.artist;
-    return (
-      <div>
-        <h2>{artist.name}</h2>
-        {artist.albums.map((album) => <AlbumBox album={album} /> )}
-      </div>
-    );
-  }
-
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
+      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+        {!token ? // If the user isn't logged in to their Spotify,
 
-        {!token ?
-          <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
             <Welcome endpoint={AUTH_ENDPOINT} client={CLIENT_ID} redirect={REDIRECT_URI} response={RESPONSE_TYPE} scope={SCOPE} />
-          </Container>
-        :
+
+        : // If the user is logged in, display the MySpotify page
           <MySpotify logout={logout} artists={artists} />
         }
+      </Container>
 
     </ThemeProvider>
   );

@@ -3,7 +3,9 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 
+// This contains the welcome page that provides an introduction to our app
 function Welcome (props) {
   return (
     <Paper elevation={2} sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
@@ -19,11 +21,7 @@ function Welcome (props) {
       <Typography variant="body1" paragraph>
         Don't have a Spotify account? You can still access the data from the past year's top songs and their corresponding record labels.
       </Typography>
-      <Stack
-          direction="row"
-          spacing={2}
-          justifyContent="center"
-        >
+      <Stack direction="row" spacing={2} justifyContent="center">
         <Button variant="outlined">View Top Charts</Button>
         <Button variant="contained" style={{ textAlign: "center" }} href={`${props.endpoint}?client_id=${props.client}&redirect_uri=${props.redirect}&response_type=${props.response}&scope=${props.scope}`}>Log In With Spotify</Button>
       </Stack>

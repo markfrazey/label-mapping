@@ -13,26 +13,8 @@ import { useEffect } from 'react';
 import { ImageList, ImageListItem } from '@mui/material';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 
-function AlbumBox (props) {
-  return (
-    <div class="albumBox">
-      <img src={props.album.images[1].url} />
-      <h3>{props.album.name}</h3>
-      <h4>{props.album.label}</h4>
-    </div>
-  );
-}
 
-function ArtistBox (props) {
-  let artist = props.artist;
-  return (
-    <div class="artistBox">
-      <h2>{artist.name}</h2>
-      {artist.albums.map((album) => <AlbumBox album={album} /> )}
-    </div>
-  );
-}
-
+// The TabPanel contains each tab
 function TabPanel (props) {
   const { children, value, index, ...other } = props;
 
@@ -87,11 +69,11 @@ function MyTabs (props) {
           <Typography variant="body1" paragraph>Loading...</Typography>
         :
           <Box>
-            {props.artists.map((artist) =>
+            {props.artists.map((artist) => // For each of the artists
               <Box>
                 <Typography variant="h4">{artist.name}</Typography>
                 <ImageList sx={{ gridAutoFlow: "column", gridTemplateColumns: "repeat(auto-fill,minmax(160px,1fr)) !important", gridAutoColumns: "minmax(160px, 1fr)" }}>
-                  {artist.albums.map((album) =>
+                  {artist.albums.map((album) => // For each of the artist's albums
                     <ImageListItem>
                       <img src={album.images[1].url} loading="lazy" />
                       <ImageListItemBar
