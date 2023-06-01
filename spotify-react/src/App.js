@@ -231,19 +231,24 @@ function App() {
   }
 
   // IRENE NOTE: This is where the initial landing page is 🌟
+  // idk how this works but i'll fiddle with it in a bit 
   return (
     <div className="App">
       <header className="App-header">
+      <h1>(STYLIZED) NAME OF OUR APP OR LOGO HERE. HONESTLY I HAVE NO IDEA WHAT THATS GONNA LOOK LIKE BUT ITS KIND OF WHATEVER I THINK 🌟</h1>
         {!token ?
-          <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}>Login
-              to Spotify</a>
+          
+          <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}><button>Login
+              to Spotify</button></a>
+            
           : <button onClick={logout}>Logout</button>
         }
         {token ?
           <>
+            
             <button onClick={getTopArtists}>Go!</button>
-            <textarea id="top-songs" ref={ref}></textarea>
-            <button onClick={getLabelsFromChartTracks}>TEst</button>
+            {/* <textarea id="top-songs" ref={ref}></textarea>
+            <button onClick={getLabelsFromChartTracks}>Test</button> */}
           </>
           : <h2>Please login</h2>
         }
