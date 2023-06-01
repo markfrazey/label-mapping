@@ -2,11 +2,14 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import './App.css';
 import { useEffect, useRef, useState } from 'react';
-import Box from '@mui/material/Box';
-import Navbar from './Navbar';
+// import Box from '@mui/material/Box';
+// import Navbar from './Navbar';
 import Container from '@mui/material/Container';
 import Welcome from './Welcome';
 import MySpotify from './MySpotify';
+
+// import TimeStamp from './fonts/Time-Stamp-master/TimeStamp-Standard.otf';
+// import YoungSerif from './fonts/YoungSerif-master/fonts/webfonts/YoungSerif-Regular.woff2'
 
 function App() {
   // Initialize all of the variables that the Spotify API requires
@@ -128,7 +131,7 @@ function App() {
     while (data.next) {
       console.log("Fetching next...");
       let response = await fetch(data.next, { headers: { Authorization: `Bearer ${token}` } } );
-      console.log("Done fetching next page!");
+      console.log("✅ done + fetching next page");
       if (response.ok) {
         data = await response.json();
         console.log(data);
@@ -153,7 +156,7 @@ function App() {
           data = await response.json();
           artistAlbums = artistAlbums.concat(data.items);
         } else {
-          console.log("oopsie!!");
+          console.log("🟥oopsies");
           console.log(response);
           data = {};
         }
@@ -200,13 +203,14 @@ function App() {
       },
     },
     typography: {
-      fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+      fontFamily: '"YoungSerif", "Inter", "Roboto", "Helvetica", "Arial", sans-serif',
       h2: {
         fontWeight: 600,
         transform: "scale(1, 3)",
         padding: ".6em 0",
       },
     },
+
   });
 
   // idk what this does but i think it gets the token or smth
@@ -238,7 +242,7 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+      <Container component="main" maxWidth="sm" sx={{ fontFamily:'YoungSerif', mb: 4 }}>
         {!token ? // If the user isn't logged in to their Spotify,
 
             <Welcome endpoint={AUTH_ENDPOINT} client={CLIENT_ID} redirect={REDIRECT_URI} response={RESPONSE_TYPE} scope={SCOPE} />
