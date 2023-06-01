@@ -64,7 +64,7 @@ function MyTabs(props) {
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange} centered>
           <Tab label="Top Artists" {...a11yProps(0)} />
-          <Tab label="Charts" {...a11yProps(1)} />
+          <Tab label="Timeline" {...a11yProps(1)} />
           <Tab label="About" {...a11yProps(2)} />
         </Tabs>
       </Box>
@@ -111,16 +111,20 @@ function MyTabs(props) {
         )}
       </TabPanel>
       <TabPanel value={value} index={1}>
-
-          <p>CHARTS HERE</p>
-
+      <Box>
+            {props.artists.map((artist) => (
+              <Box key={artist.id}>
+                <Typography variant="h4">{artist.name}</Typography>
+                  {artist.albums.map((album) => (
+                    <Typography variant="body1">{album.release_date.split('-')[0] + " " + album.label}</Typography>
+                  ))}
+              </Box>
+            ))}
+          </Box>
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Typography variant="h4">About This Project</Typography>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Varius quam quisque id diam vel. Quis eleifend quam adipiscing vitae proin sagittis nisl rhoncus mattis. A erat nam at lectus. Tellus id interdum velit laoreet id donec ultrices tincidunt. Ac ut consequat semper viverra. Odio euismod lacinia at quis risus sed. Enim nunc faucibus a pellentesque sit amet porttitor. Mattis pellentesque id nibh tortor id aliquet. Risus quis varius quam quisque id. Sit amet volutpat consequat mauris nunc.
-
-Aliquam nulla facilisi cras fermentum odio eu. Quis eleifend quam adipiscing vitae proin sagittis nisl rhoncus. Augue eget arcu dictum varius duis. Velit scelerisque in dictum non consectetur a erat nam at. Ut faucibus pulvinar elementum integer enim neque volutpat. Sed ullamcorper morbi tincidunt ornare massa eget egestas purus. In est ante in nibh mauris cursus mattis molestie a. Sit amet consectetur adipiscing elit duis tristique sollicitudin. Cursus eget nunc scelerisque viverra mauris in aliquam sem fringilla. Et tortor at risus viverra adipiscing at in tellus integer. Nunc aliquet bibendum enim facilisis gravida neque. Morbi tristique senectus et netus et malesuada. Ullamcorper malesuada proin libero nunc consequat interdum varius. Quam adipiscing vitae proin sagittis nisl rhoncus mattis rhoncus. Nunc non blandit massa enim nec. At urna condimentum mattis pellentesque. Diam sit amet nisl suscipit adipiscing bibendum. Aliquam vestibulum morbi blandit cursus.</p>
-
+        <p>about this project text </p>     
       </TabPanel>
     </Box>
   );
