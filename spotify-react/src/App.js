@@ -1,5 +1,12 @@
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import './App.css';
 import { useEffect, useRef, useState } from 'react';
+import Box from '@mui/material/Box';
+import Navbar from './Navbar';
+import Container from '@mui/material/Container';
+import Welcome from './Welcome';
+import MySpotify from './MySpotify';
 
 function App() {
   // Initialize all of the variables that the Spotify API requires
@@ -15,23 +22,8 @@ function App() {
   // Initialize the top artists object
   const [artists, setArtists] = useState([]);
 
-  // idk what this does but i think it gets the token or smth
-  useEffect(() => {
-    const hash = window.location.hash;
-    let token = window.localStorage.getItem("token");
-    if (!token && hash) {
-      token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1];
-      window.location.hash = "";
-      window.localStorage.setItem("token", token);
-    }
-    setToken(token);
-  }, []);
-
-  // Logs the user out of their Spotify account
-  const logout = () => {
-    setToken("");
-    window.localStorage.removeItem("token");
-  }
+  // Initialize the ref idk what this does
+  const ref = useRef(null);
 
   // Gets a user's top tracks as an array
   const getTopTracks = async () => {
@@ -61,10 +53,9 @@ function App() {
     let groupedAlbums = groupAlbums(topTracks);
     let albumData = await getAllAlbumData(groupedAlbums);
     console.log(albumData);
-    console.log(printCopyrights(albumData));
     console.log(groupLabels(albumData));
     return topTracks;
-  }
+}
 
   // Takes an array of top tracks and returns the unique albums
   const groupAlbums = (tracks) => {
@@ -109,15 +100,6 @@ function App() {
     return result;
   }
 
-  //
-  const printCopyrights = (albums) => {
-    for (const album of albums) {
-      for (const copyright of album.copyrights) {
-        console.log(copyright);
-      }
-    }
-  }
-
   // Prints out the artist(s) name(s) and title of each track
   const printTopTracks = (topTracks) => {
     for (const track of topTracks) {
@@ -157,8 +139,7 @@ function App() {
         data = {};
       }
     }
-    console.log(topArtists);
-    getArtistAlbums(topArtists.slice(0, 10));
+    return topArtists;
   }
 
   const getArtistAlbums = async (artists) => {
@@ -177,17 +158,13 @@ function App() {
           data = {};
         }
       }
-      console.log(artistAlbums);
       let albums = await getAllAlbumData(artistAlbums);
       artist.albums = albums;
       result.push(artist);
       console.log(albums);
     }
-    setArtists(result);
     return result;
   }
-
-  const ref = useRef(null);
 
   const getLabelsFromChartTracks = async () => {
     let result = [];
@@ -210,9 +187,57 @@ function App() {
     console.log(result);
   }
 
+  // Initialize the MUI theme
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+      primary: {
+        main: '#B443FF',
+      },
+      background: {
+        default: '#000000',
+        paper: '#080808',
+      },
+    },
+    typography: {
+      fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+      h2: {
+        fontWeight: 600,
+        transform: "scale(1, 3)",
+        padding: ".6em 0",
+      },
+    },
+  });
+
+  // idk what this does but i think it gets the token or smth
+  useEffect(() => {
+    const hash = window.location.hash;
+    let token = window.localStorage.getItem("token");
+    if (!token && hash) {
+      token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1];
+      window.location.hash = "";
+      window.localStorage.setItem("token", token);
+    }
+    setToken(token);
+  }, []);
+
+  useEffect(() => {
+    if (token !== "" && artists.length === 0) {
+      getTopArtists()
+        .then((topArtists) => getArtistAlbums(topArtists.slice(0, 10)))
+        .then(setArtists);
+    }
+  });
+
+  // Logs the user out of their Spotify account
+  const logout = () => {
+    setToken("");
+    window.localStorage.removeItem("token");
+  }
+
   function AlbumBox (props) {
     return (
-      <div class="albumBox">
+      <div>
         <img src={props.album.images[1].url} />
         <h3>{props.album.name}</h3>
         <h4>{props.album.label}</h4>
@@ -223,45 +248,26 @@ function App() {
   function ArtistBox (props) {
     let artist = props.artist;
     return (
-      <div class="artistBox">
+      <div>
         <h2>{artist.name}</h2>
         {artist.albums.map((album) => <AlbumBox album={album} /> )}
       </div>
     );
   }
 
-  // IRENE NOTE: This is where the initial landing page is 🌟
-  // idk how this works but i'll fiddle with it in a bit 
   return (
-    <div className="App">
-      <header className="App-header">
-      <h1>(STYLIZED) NAME OF OUR APP OR LOGO HERE. HONESTLY I HAVE NO IDEA WHAT THATS GONNA LOOK LIKE BUT ITS KIND OF WHATEVER I THINK 🌟</h1>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+
         {!token ?
-          
-          <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}><button>Login
-              to Spotify</button></a>
-            
-          : <button onClick={logout}>Logout</button>
+          <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+            <Welcome endpoint={AUTH_ENDPOINT} client={CLIENT_ID} redirect={REDIRECT_URI} response={RESPONSE_TYPE} scope={SCOPE} />
+          </Container>
+        :
+          <MySpotify logout={logout} artists={artists} />
         }
-        {token ?
-          <>
-            
-            <button onClick={getTopArtists}>Go!</button>
-            {/* <textarea id="top-songs" ref={ref}></textarea>
-            <button onClick={getLabelsFromChartTracks}>Test</button> */}
-          </>
-          : <h2>Please login</h2>
-        }
-      </header>
-      <body>
-        <div id="output">
-          {artists.length > 0 ?
-            artists.map((artist) => <ArtistBox artist={artist} /> )
-            : <h4>Press "Go" and then wait a little bit</h4>
-          }
-        </div>
-      </body>
-    </div>
+
+    </ThemeProvider>
   );
 }
 
