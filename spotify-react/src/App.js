@@ -230,7 +230,7 @@ function App() {
   useEffect(() => {
     if (token !== "" && artists.length === 0) {
       getTopArtists()
-        .then((topArtists) => getArtistAlbums(topArtists.slice(0, 10)))
+        .then((topArtists) => getArtistAlbums(topArtists.slice(0, 15)))
         .then(setArtists);
     }
   });

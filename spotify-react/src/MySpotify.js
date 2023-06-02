@@ -21,6 +21,10 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 // The TabPanel contains each tab
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -119,30 +123,40 @@ function MyTabs(props) {
         )}
       </TabPanel>
       <TabPanel value={value} index={1}>
-      <Box>
-            {props.artists.map((artist) => (
-              <Box key={artist.id}>
-                <Typography variant="h4">{artist.name}</Typography>
+        <Box>
+          {props.artists.map((artist) => (
+            <Box key={artist.id}>
+              <Accordion defaultExpanded={false}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography variant="h4">{artist.name}</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
                   <Timeline position="left">
-                  {artist.albums.map((album) => (
-                    // WE NEED AN ARRAY OF OBJECTS   
-                    <TimelineItem>
-                      <TimelineOppositeContent>{album.release_date.split('-')[0]}</TimelineOppositeContent>
-                      <TimelineSeparator>
-                        <TimelineDot />
-                        <TimelineConnector />
-                      </TimelineSeparator>
-                      <TimelineContent>{album.label}</TimelineContent>
-                    </TimelineItem>
-                  ))}
+                    {artist.albums.map((album) => (
+                      // WE NEED AN ARRAY OF OBJECTS   
+                      <TimelineItem>
+                        <TimelineOppositeContent>{album.release_date.split('-')[0]}</TimelineOppositeContent>
+                        <TimelineSeparator>
+                          <TimelineDot />
+                          <TimelineConnector />
+                        </TimelineSeparator>
+                        <TimelineContent>{album.label}</TimelineContent>
+                      </TimelineItem>
+                    ))}
                   </Timeline>
-              </Box>
-            ))}
-          </Box>
+                </AccordionDetails>
+              </Accordion>
+            </Box>
+          ))}
+        </Box>
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Typography variant="h4">About This Project</Typography>
-        <p>about this project text </p>     
+        <p>about this project text </p>
       </TabPanel>
     </Box>
   );
