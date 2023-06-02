@@ -11,6 +11,8 @@ import MySpotify from './MySpotify';
 // import TimeStamp from './fonts/Time-Stamp-master/TimeStamp-Standard.otf';
 // import YoungSerif from './fonts/YoungSerif-master/fonts/webfonts/YoungSerif-Regular.woff2'
 
+
+
 function App() {
   // Initialize all of the variables that the Spotify API requires
   const CLIENT_ID = "2e7905b28fa443f3b1a6b0688cce9dd0";

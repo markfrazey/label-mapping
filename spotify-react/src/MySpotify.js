@@ -13,6 +13,14 @@ import { useEffect } from "react";
 import { ImageList, ImageListItem } from "@mui/material";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 
+import Timeline from '@mui/lab/Timeline';
+import TimelineItem from '@mui/lab/TimelineItem';
+import TimelineSeparator from '@mui/lab/TimelineSeparator';
+import TimelineConnector from '@mui/lab/TimelineConnector';
+import TimelineContent from '@mui/lab/TimelineContent';
+import TimelineDot from '@mui/lab/TimelineDot';
+import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
+
 // The TabPanel contains each tab
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -115,9 +123,19 @@ function MyTabs(props) {
             {props.artists.map((artist) => (
               <Box key={artist.id}>
                 <Typography variant="h4">{artist.name}</Typography>
+                  <Timeline position="left">
                   {artist.albums.map((album) => (
-                    <Typography variant="body1">{album.release_date.split('-')[0] + " " + album.label}</Typography>
+                    // WE NEED AN ARRAY OF OBJECTS   
+                    <TimelineItem>
+                      <TimelineOppositeContent>{album.release_date.split('-')[0]}</TimelineOppositeContent>
+                      <TimelineSeparator>
+                        <TimelineDot />
+                        <TimelineConnector />
+                      </TimelineSeparator>
+                      <TimelineContent>{album.label}</TimelineContent>
+                    </TimelineItem>
                   ))}
+                  </Timeline>
               </Box>
             ))}
           </Box>
