@@ -244,16 +244,11 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Container component="main" maxWidth="sm" sx={{ fontFamily:'YoungSerif', mb: 4 }}>
         {!token ? // If the user isn't logged in to their Spotify,
-
-            <Welcome endpoint={AUTH_ENDPOINT} client={CLIENT_ID} redirect={REDIRECT_URI} response={RESPONSE_TYPE} scope={SCOPE} />
-
+          <Welcome endpoint={AUTH_ENDPOINT} client={CLIENT_ID} redirect={REDIRECT_URI} response={RESPONSE_TYPE} scope={SCOPE} />
         : // If the user is logged in, display the MySpotify page
           <MySpotify logout={logout} artists={artists} />
         }
-      </Container>
-
     </ThemeProvider>
   );
 }
