@@ -47,7 +47,7 @@ export default function Navbar () {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
           <Tab label="Charts" {...a11yProps(0)} />
           <Tab label="Item Two" {...a11yProps(1)} />

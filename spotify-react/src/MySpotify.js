@@ -74,7 +74,7 @@ function MyTabs(props) {
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={value} onChange={handleChange} centered>
+        <Tabs value={value} onChange={handleChange} centered position='static'>
           <Tab label="Top Artists" {...a11yProps(0)} />
           <Tab label="Timeline" {...a11yProps(1)} />
           <Tab label="About" {...a11yProps(2)} />
@@ -94,8 +94,8 @@ function MyTabs(props) {
                   sx={{
                     gridAutoFlow: "column",
                     gridTemplateColumns:
-                      "repeat(auto-fill,minmax(160px,1fr)) !important",
-                    gridAutoColumns: "minmax(160px, 1fr)",
+                      "repeat(auto-fill,minmax(250px,1fr)) !important",
+                    gridAutoColumns: "minmax(250px, 1fr)",
                   }}
                 >
                   {artist.albums.map((album) => (
@@ -109,10 +109,11 @@ function MyTabs(props) {
                         loading="lazy"
                         alt={album.name}
                       />
-                      <ImageListItemBar
+                      <ImageListItemBar 
                         title={album.name}
                         subtitle={album.label}
                         position="below"
+                        className= 'titleWrap'
                       />
                     </ImageListItem>
                   ))}
@@ -164,7 +165,7 @@ function MyTabs(props) {
 
 function Navbar(props) {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1}}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
