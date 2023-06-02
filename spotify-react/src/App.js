@@ -210,6 +210,9 @@ function App() {
         fontWeight: 600,
         transform: "scale(1, 3)",
         padding: ".6em 0",
+      },      
+      body2: {
+        fontSize: '1.05em',
       },
     },
 

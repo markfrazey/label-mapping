@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect } from "react";
-import { ImageList, ImageListItem } from "@mui/material";
+import { Card, ImageList, ImageListItem } from "@mui/material";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 
 import Timeline from '@mui/lab/Timeline';
@@ -25,6 +25,9 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 // The TabPanel contains each tab
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -82,7 +85,7 @@ function MyTabs(props) {
       </Box>
       <TabPanel value={value} index={0}>
         {props.artists.length === 0 ? (
-          <Typography variant="body1" paragraph>
+          <Typography variant="body2" paragraph>
             Loading...
           </Typography>
         ) : (
@@ -109,11 +112,11 @@ function MyTabs(props) {
                         loading="lazy"
                         alt={album.name}
                       />
-                      <ImageListItemBar 
+                      <ImageListItemBar
                         title={album.name}
                         subtitle={album.label}
                         position="below"
-                        className= 'titleWrap'
+                        className='titleWrap'
                       />
                     </ImageListItem>
                   ))}
@@ -130,8 +133,8 @@ function MyTabs(props) {
               <Accordion defaultExpanded={false}>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
+                  aria-controls="timeline-content"
+                  id="timeline-header"
                 >
                   <Typography variant="h4">{artist.name}</Typography>
                 </AccordionSummary>
@@ -156,8 +159,67 @@ function MyTabs(props) {
         </Box>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Typography variant="h4">About This Project</Typography>
-        <p>about this project text </p>
+        <Accordion defaultExpanded={true}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="about-content"
+            id="about-header"
+          >
+            <Typography variant="h5">About This Project</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {/* <Typography variant="h5">Objective</Typography> */}
+            <Typography variant="body2" paragraph>
+              Our objective for this web app was to create a dynamic overview for listening habits that emphasize the role that record labels play in their favorite artist's careers, for both casual listeners and intense enthusiasts alike.
+            </Typography>
+
+            <Typography variant="body2" paragraph>
+              Each artist has a different discography and career - working with different labels or self releasing parts of their discography through independent distribution platforms, such as Distrokid or Tunecore. We wanted to chart these relations between labels, album releases, and artists.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion defaultExpanded={false}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="process-content"
+            id="process-header"
+          >
+            <Typography variant="h6">What was the development process like?</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography variant="body2" paragraph>
+              From the listener’s current 15 top artists, we would return information about each artist’s albums, with the release year and record label.
+            </Typography>
+
+            <Typography variant="body2" paragraph>
+              We use the Spotify API in order to get the list of the personalized top artists.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion defaultExpanded={false}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="faq-content"
+            id="faq-header"
+          >
+            <Typography variant="h6">What are the limitations?</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {/* <Typography variant="h5">Objective</Typography> */}
+            <Typography variant="body2" paragraph>
+              There are a couple of limitations.
+            </Typography>
+
+            <Typography variant="body2" paragraph>
+              <ul>
+                <li>Spotify often does not contain an entire artist's discography.</li>
+                <li>Artists often change stage names, or release music under a variety of different projects with different names; for example, the artistly commonly known as 'Four Tet' has also released music under the names 'KH', '00110100 01010100', and ' ⣎⡇ꉺლ༽இ•̛)ྀ◞ ༎ຶ ༽ৣৢ؞ৢ؞ؖ ꉺლ'. We cannot track any name changes throughout an artist's career.</li>
+                <li>We only included and returned musical releases within Spotify's database listed as albums - that means we excluded other categorizations of released music such as EPs and singles. This means that any artists whose discographies consist of mostly EPs or singles may be misrepresented. This will skew by genre - dance music in particular favors the EP format.</li>
+              </ul>
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+
       </TabPanel>
     </Box>
   );
@@ -165,7 +227,7 @@ function MyTabs(props) {
 
 function Navbar(props) {
   return (
-    <Box sx={{ flexGrow: 1}}>
+    <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
