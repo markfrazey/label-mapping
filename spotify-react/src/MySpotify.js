@@ -176,6 +176,10 @@ function MyTabs(props) {
             <Typography variant="body2" paragraph>
               Each artist has a different discography and career - working with different labels or self releasing parts of their discography through independent distribution platforms, such as Distrokid or Tunecore. We wanted to chart these relations between labels, album releases, and artists.
             </Typography>
+            
+            <Typography variant="body2" paragraph>
+              University of Washington | INFO 498E/TXTDS 413: Introduction to Textual Studies | Spring 2023
+            </Typography>
           </AccordionDetails>
         </Accordion>
         <Accordion defaultExpanded={false}>
@@ -213,8 +217,8 @@ function MyTabs(props) {
             <Typography variant="body2" paragraph>
               <ul>
                 <li>Spotify often does not contain an entire artist's discography.</li>
-                <li>Artists often change stage names, or release music under a variety of different projects with different names; for example, the artistly commonly known as 'Four Tet' has also released music under the names 'KH', '00110100 01010100', and ' ⣎⡇ꉺლ༽இ•̛)ྀ◞ ༎ຶ ༽ৣৢ؞ৢ؞ؖ ꉺლ'. We cannot track any name changes throughout an artist's career.</li>
-                <li>We only included and returned musical releases within Spotify's database listed as albums - that means we excluded other categorizations of released music such as EPs and singles. This means that any artists whose discographies consist of mostly EPs or singles may be misrepresented. This will skew by genre - dance music in particular favors the EP format.</li>
+                <li>Artists often change stage names, or release music under a variety of different projects with different names; for example, the artist commonly known as 'Four Tet' has also released music under the names 'KH', '00110100 01010100', and ' ⣎⡇ꉺლ༽இ•̛)ྀ◞ ༎ຶ ༽ৣৢ؞ৢ؞ؖ ꉺლ'. We cannot track any name changes throughout an artist's career.</li>
+                <li>We only included musical releases within Spotify's database listed as albums - that means we excluded other categorizations of released music, such as EPs and singles. Any artists whose discographies consist of mostly EPs or singles may be misrepresented. This will skew by genre - dance music in particular favors the EP format.</li>
               </ul>
             </Typography>
           </AccordionDetails>
