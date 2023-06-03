@@ -176,7 +176,7 @@ function MyTabs(props) {
             <Typography variant="body2" paragraph>
               Each artist has a different discography and career - working with different labels or self releasing parts of their discography through independent distribution platforms, such as Distrokid or Tunecore. We wanted to chart these relations between labels, album releases, and artists.
             </Typography>
-            
+
             <Typography variant="body2" paragraph>
               University of Washington | INFO 498E/TXTDS 413: Introduction to Textual Studies | Spring 2023
             </Typography>
@@ -223,7 +223,6 @@ function MyTabs(props) {
             </Typography>
           </AccordionDetails>
         </Accordion>
-
       </TabPanel>
     </Box>
   );
