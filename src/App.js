@@ -16,7 +16,7 @@ import MySpotify from './MySpotify';
 function App() {
   // Initialize all of the variables that the Spotify API requires
   const CLIENT_ID = "2e7905b28fa443f3b1a6b0688cce9dd0";
-  const REDIRECT_URI = "http://localhost:3000";
+  const REDIRECT_URI = "https://markfrazey.github.io/label-mapping/";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
   const RESPONSE_TYPE = "token";
   const SCOPE = "user-top-read";
@@ -210,7 +210,7 @@ function App() {
         fontWeight: 600,
         transform: "scale(1, 3)",
         padding: ".6em 0",
-      },      
+      },
       body2: {
         fontSize: '1.05em',
       },
